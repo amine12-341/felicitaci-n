@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ramadan Mubarak ULTRA MAX 2.2 🌙</title>
+<style>
+body{
+  margin:0;
+  font-family:'Segoe UI',sans-serif;
+  overflow:hidden;
+  background: radial-gradient(circle at top,#00102a,#001f4f);
+  color:white;
+}
+
+/* Botón idioma */
+.lang-btn{
+  position:absolute;
+  top:10px;
+  right:10px;
+  padding:6px 12px;
+  border:none;
+  border-radius:18px;
+  background:#ffd700;
+  color:black;
+  cursor:pointer;
+  z-index:1000;
+  font-weight:bold;
+}
+
+/* Calendario pequeño arriba izquierda */
+#calendar{
+  position:absolute;
+  top:10px;
+  left:10px;
+  width:140px;
+  background:rgba(0,0,0,0.6);
+  border-radius:10px;
+  padding:6px;
+  font-size:12px;
+  box-shadow:0 0 8px gold;
+}
+
+#calendar h3{
+  margin:0 0 4px 0;
+  color:gold;
+  text-align:center;
+  font-size:14px;
+}
+
+/* Texto principal arriba */
+#headerText{
+  position:absolute;
+  top:20px;
+  left:50%;
+  transform:translateX(-50%);
+  text-align:center;
+  z-index:10;
+}
+
+#headerText h1{
+  margin:0;
+  font-size:36px;
+  color:gold;
+  text-shadow:0 0 8px black;
+}
+
+#headerText p{
+  margin:2px 0 0 0;
+  font-size:18px;
+  color:gold;
+  text-shadow:0 0 6px black;
+}
+
+/* Contenedor central estilo pergamino */
+#content{
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  width:70%;
+  text-align:center;
+  background:rgba(0,0,0,0.6);
+  border:2px solid gold;
+  border-radius:12px;
+  padding:20px;
+  box-shadow:0 0 15px gold;
+  z-index:10;
+}
+
+#content p{
+  font-size:20px;
+  line-height:1.6;
+  color:gold;
+  margin:10px 0;
+  text-shadow: 0 0 6px black;
+}
+
+/* Nombre destacado */
+#myName{
+  font-size:28px;
+  font-weight:bold;
+  color:#ffd700;
+  text-shadow:0 0 8px black;
+  margin-bottom:10px;
+}
+
+/* Emoji mezquita en la parte inferior */
+#mosqueEmoji{
+  position:absolute;
+  bottom:30px;
+  left:50%;
+  transform:translateX(-50%);
+  font-size:80px;
+  z-index:5;
+}
+
+/* Luna fases animada */
+#moon{
+  position:absolute;
+  top:50px;
+  right:50px;
+  width:90px;
+  height:90px;
+  border-radius:50%;
+  background: radial-gradient(circle at 30% 30%,#fff,#f0f0f0,#ccc);
+  box-shadow:0 0 25px #fff;
+  animation:moonMove 40s linear infinite, moonPhase 15s infinite;
+}
+
+@keyframes moonMove{
+  0%{transform:translateY(0);}
+  50%{transform:translateY(-12px);}
+  100%{transform:translateY(0);}
+}
+
+@keyframes moonPhase{
+  0%{clip-path: polygon(50% 0%, 100% 0%, 100% 100%, 50% 100%, 0% 50%);}
+  50%{clip-path: circle(50% at 50% 50%);}
+  100%{clip-path: polygon(50% 0%, 100% 0%, 100% 100%, 50% 100%, 0% 50%);}
+}
+
+/* Canvas para partículas y símbolos */
+#effectsCanvas{
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  pointer-events:none;
+  z-index:5;
+}
+
+/* Fuegos artificiales tipo WOW */
+.firework{
+  position:absolute;
+  width:8px;height:8px;
+  background:gold;
+  border-radius:50%;
+  top:50%;
+  left:50%;
+  animation:explode 1.5s ease-out forwards;
+}
+@keyframes explode{
+  to{transform:translate(var(--x),var(--y));opacity:0;}
+}
+
+/* Responsivo */
+@media(max-width:600px){
+  #content { width:90%; font-size:16px; }
+  #calendar { width:100px; font-size:10px; }
+  #moon { width:60px; height:60px; top:20px; right:20px; }
+  #headerText h1 { font-size:24px; }
+  #headerText p { font-size:14px; }
+  #myName { font-size:20px; }
+  #mosqueEmoji { font-size:50px; bottom:20px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Botón idioma -->
+<button class="lang-btn" onclick="toggleLang()" aria-label="Cambiar idioma">English</button>
+
+<!-- Calendario -->
+<div id="calendar">
+  <h3>Ramadán 2026</h3>
+  <div id="days"></div>
+</div>
+
+<!-- Texto principal arriba -->
+<div id="headerText">
+  <h1>Ramadan Mubarak 🌙</h1>
+  <p>¡Feliz Ramadán! / رمضان مبارك</p>
+</div>
+
+<!-- Contenedor central estilo pergamino -->
+<div id="content">
+  <div id="myName">Mohammed Amine</div>
+  <p id="message">
+    Querida familia y amigos,<br>
+    Que este Ramadán llene sus corazones de paz, bendiciones y felicidad.<br>
+    Que Allah acepte sus oraciones y ayunos y les traiga alegría en cada día.
+  </p>
+</div>
+
+<!-- Emoji mezquita -->
+<div id="mosqueEmoji">🕌</div>
+
+<!-- Luna fases -->
+<div id="moon"></div>
+
+<!-- Canvas para partículas y símbolos -->
+<canvas id="effectsCanvas"></canvas>
+
+<!-- Audio para Ramadán -->
+<audio id="music" preload="auto">
+  <source src="ramadan-music.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+/* ===== AUTO PLAY REAL (máximo permitido) ===== */
+const music = document.getElementById("music");
+
+/* Intento autoplay */
+window.addEventListener("load", () => {
+  const playPromise = music.play();
+  if(playPromise !== undefined){
+    playPromise.catch(()=>{});
+  }
+});
+
+/* Activar sonido cuando el usuario toca o hace click */
+function enableSound(){
+  music.muted = false;
+  music.volume = 0.6;
+  music.play();
+  document.removeEventListener("click", enableSound);
+  document.removeEventListener("touchstart", enableSound);
+}
+
+document.addEventListener("click", enableSound);
+document.addEventListener("touchstart", enableSound);
+
+// Idiomas
+let lang="es";
+function toggleLang(){
+  const msg = document.getElementById("message");
+  const btn = document.querySelector(".lang-btn");
+  if(lang==="es"){
+    lang="ar";
+    btn.innerText="Arabic";
+    msg.innerHTML=`عائلتي وأصدقائي الأعزاء,<br>
+    نسأل الله أن يملأ هذا الشهر المبارك قلوبكم بالسلام والبركات والسعادة.<br>
+    تقبل الله صيامكم وصلواتكم وأعمالكم الصالحة.`;
+  } else if(lang==="ar"){
+    lang="en";
+    btn.innerText="English";
+    msg.innerHTML=`Dear family and friends,<br>
+    May this Ramadan fill your hearts with peace, blessings and happiness.<br>
+    May Allah accept your prayers and fasting and bring joy to every day.`;
+  } else{
+    lang="es";
+    btn.innerText="Español";
+    msg.innerHTML=`Querida familia y amigos,<br>
+    Que este Ramadán llene sus corazones de paz, bendiciones y felicidad.<br>
+    Que Allah acepte sus oraciones y ayunos y les traiga alegría en cada día.`;
+  }
+}
+
+// Generar días del calendario
+const daysContainer = document.getElementById("days");
+let totalDays = 30;
+for(let i=1;i<=totalDays;i++){
+  const d = document.createElement("div");
+  d.style.display="inline-block";
+  d.style.width="20px";
+  d.style.height="20px";
+  d.style.margin="1px";
+  d.style.textAlign="center";
+  d.style.lineHeight="20px";
+  d.style.borderRadius="4px";
+  d.style.background="#001f4f";
+  d.style.color="gold";
+  d.style.fontSize="10px";
+  d.innerText=i;
+  daysContainer.appendChild(d);
+}
+
+// Canvas para partículas y símbolos
+const canvas = document.getElementById('effectsCanvas');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+const ctx = canvas.getContext('2d');
+
+const particles = Array.from({length: 60}, () => ({
+  x: Math.random()*canvas.width,
+  y: Math.random()*canvas.height,
+  size: Math.random()*4+2,
+  speed: Math.random()*1.5+0.5
+}));
+
+const symbolsArray = ["☪","⭐","🌙"];
+const symbols = Array.from({length: 25}, () => ({
+  x: Math.random()*canvas.width,
+  y: Math.random()*canvas.height,
+  text: symbolsArray[Math.floor(Math.random()*symbolsArray.length)],
+  speed: Math.random()*1.2+0.3,
+  size: Math.random()*24+12
+}));
+
+function animate(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  // Partículas
+  particles.forEach(p => {
+    ctx.fillStyle = 'gold';
+    ctx.beginPath();
+    ctx.arc(p.x,p.y,p.size,0,Math.PI*2);
+    ctx.fill();
+    p.y -= p.speed;
+    if(p.y<0) p.y = canvas.height;
+  });
+  // Símbolos
+  symbols.forEach(s => {
+    ctx.fillStyle = 'gold';
+    ctx.font = s.size+'px Segoe UI';
+    ctx.fillText(s.text,s.x,s.y);
+    s.y -= s.speed;
+    if(s.y<0) s.y = canvas.height + s.size;
+  });
+  requestAnimationFrame(animate);
+}
+animate();
+
+// Fuegos artificiales
+function fireworks(){
+  for(let i=0;i<40;i++){
+    const f=document.createElement("div");
+    f.className="firework";
+    f.style.setProperty('--x',(Math.random()*500-250)+'px');
+    f.style.setProperty('--y',(Math.random()*400-200)+'px');
+    document.body.appendChild(f);
+    setTimeout(()=>f.remove(),1500);
+  }
+}
+setInterval(fireworks,6000);
+</script>
+
+</body>
+</html>
